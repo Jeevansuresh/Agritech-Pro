@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌾 AgriTech Pro - Smart Farming Assistant</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="fas fa-seedling me-2"></i>AgriTech Pro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="#dashboard"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
+                    <a class="nav-link" href="#predictions"><i class="fas fa-chart-line me-1"></i>Predictions</a>
+                    <a class="nav-link" href="#iot-monitor"><i class="fas fa-satellite me-1"></i>IoT Monitor</a>
+                    <a class="nav-link" href="#climate-section"><i class="fas fa-cloud-sun me-1"></i>Climate</a>
+                    <a class="nav-link" href="#crop-health"><i class="fas fa-camera me-1"></i>Crop Health</a>
+                    <a class="nav-link" href="#traceability"><i class="fas fa-link me-1"></i>Traceability</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-3 text-white">
+                        Next-Generation Smart Farming
+                    </h1>
+                    <p class="lead mb-4 text-white-50">
+                        AI-Powered Crop Management, Real-time IoT Monitoring, Climate Adaptation & Blockchain Traceability
+                    </p>
+                    <div class="d-flex gap-3 mb-4">
+                        <button class="btn btn-success btn-lg" onclick="scrollToSection('predictions')">
+                            <i class="fas fa-rocket me-2"></i>Start Predicting
+                        </button>
+                        <button class="btn btn-outline-light btn-lg" onclick="scrollToSection('iot-monitor')">
+                            <i class="fas fa-satellite me-2"></i>Live Monitor
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="hero-stats">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="stat-card text-center">
+                                    <i class="fas fa-chart-area fa-2x text-success mb-2"></i>
+                                    <h3 id="total-predictions" class="counter">1,247</h3>
+                                    <p class="mb-0">Predictions Made</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-card text-center">
+                                    <i class="fas fa-leaf fa-2x text-success mb-2"></i>
+                                    <h3 id="crops-monitored" class="counter">89</h3>
+                                    <p class="mb-0 small">Crops Monitored</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-card text-center">
+                                    <i class="fas fa-users fa-2x text-success mb-2"></i>
+                                    <h3 id="active-farmers" class="counter">456</h3>
+                                    <p class="mb-0 small">Active Farmers</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Overview -->
+    <section id="dashboard" class="py-5 bg-light">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2 class="mb-4">
+                        <i class="fas fa-tachometer-alt me-2 text-primary"></i>Real-Time Dashboard
+                    </h2>
+                </div>
+            </div>
+            
+            <!-- Key Metrics Cards -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-3">
+                    <div class="metric-card">
+                        <div class="metric-icon bg-success">
+                            <i class="fas fa-thermometer-half"></i>
+                        </div>
+                        <div class="metric-info">
+                            <h4 id="current-temp">28.5°C</h4>
+                            <p>Current Temperature</p>
+                            <span class="metric-trend positive">+2.3°</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="metric-card">
+                        <div class="metric-icon bg-info">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <div class="metric-info">
+                            <h4 id="soil-moisture">65%</h4>
+                            <p>Soil Moisture</p>
+                            <span class="metric-trend negative">-5%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="metric-card">
+                        <div class="metric-icon bg-warning">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <div class="metric-info">
+                            <h4 id="soil-ph">6.8</h4>
+                            <p>Soil pH Level</p>
+                            <span class="metric-trend neutral">0.0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="metric-card">
+                        <div class="metric-icon bg-danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="metric-info">
+                            <h4 id="alert-count">3</h4>
+                            <p>Active Alerts</p>
+                            <span class="live-indicator">LIVE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weather Widget -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="weather-widget">
+                        <div class="weather-header">
+                            <h5><i class="fas fa-cloud-sun me-2"></i>7-Day Weather Forecast</h5>
+                            <button class="btn btn-sm btn-outline-primary" onclick="refreshWeather()">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                        <div id="weather-forecast" class="weather-forecast-container">
+                            <!-- Weather data will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Predictions Section -->
+    <section id="predictions" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">
+                <i class="fas fa-brain me-2 text-primary"></i>AI-Powered Predictions
+            </h2>
+            
+            <div class="row">
+                <!-- Yield Prediction -->
+                <div class="col-lg-6 mb-4">
+                    <div class="feature-card h-100">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-chart-line me-2"></i>Yield Prediction
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="yieldForm" class="prediction-form">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Year</label>
+                                        <input type="number" name="year" class="form-control" value="2025" min="2020" max="2030">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Area (hectares)</label>
+                                        <input type="number" name="area" class="form-control" value="5" min="0.1" step="0.1">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Nitrogen (N)</label>
+                                        <input type="number" name="N" class="form-control" value="40" min="0" max="100">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Phosphorus (P)</label>
+                                        <input type="number" name="P" class="form-control" value="30" min="0" max="100">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Potassium (K)</label>
+                                        <input type="number" name="K" class="form-control" value="20" min="0" max="100">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Soil pH</label>
+                                        <input type="number" name="pH" class="form-control" value="6.5" min="3" max="10" step="0.1">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Avg Temperature (°C)</label>
+                                        <input type="number" name="avg_temp_c" class="form-control" value="28" min="0" max="50">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Rainfall (mm)</label>
+                                        <input type="number" name="total_rainfall_mm" class="form-control" value="900" min="0" max="3000">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Humidity (%)</label>
+                                        <input type="number" name="avg_humidity_percent" class="form-control" value="70" min="0" max="100">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Crop</label>
+                                        <select name="crop" class="form-select">
+                                            <option value="Rice">Rice</option>
+                                            <option value="Wheat">Wheat</option>
+                                            <option value="Maize">Maize</option>
+                                            <option value="Sugarcane">Sugarcane</option>
+                                            <option value="Cotton">Cotton</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Season</label>
+                                        <select name="season" class="form-select">
+                                            <option value="Kharif">Kharif</option>
+                                            <option value="Rabi">Rabi</option>
+                                            <option value="Zaid">Zaid</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">State</label>
+                                        <select name="state" class="form-select">
+                                            <option value="Tamil Nadu">Tamil Nadu</option>
+                                            <option value="Karnataka">Karnataka</option>
+                                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                            <option value="Maharashtra">Maharashtra</option>
+                                            <option value="Punjab">Punjab</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-success w-100">
+                                            <i class="fas fa-calculator me-2"></i>Predict Yield & Get Advice
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div id="yieldResult" class="result-container"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crop Recommendation -->
+                <div class="col-lg-6 mb-4">
+                    <div class="feature-card h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-seedling me-2"></i>Crop Recommendation
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="cropForm" class="prediction-form">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Year</label>
+                                        <input type="number" name="year" class="form-control" value="2025" min="2020" max="2030">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Area (hectares)</label>
+                                        <input type="number" name="area" class="form-control" value="5" min="0.1" step="0.1">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Nitrogen (N)</label>
+                                        <input type="number" name="N" class="form-control" value="40" min="0" max="100">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Phosphorus (P)</label>
+                                        <input type="number" name="P" class="form-control" value="30" min="0" max="100">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Potassium (K)</label>
+                                        <input type="number" name="K" class="form-control" value="20" min="0" max="100">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Soil pH</label>
+                                        <input type="number" name="pH" class="form-control" value="6.5" min="3" max="10" step="0.1">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Avg Temperature (°C)</label>
+                                        <input type="number" name="avg_temp_c" class="form-control" value="28" min="0" max="50">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Rainfall (mm)</label>
+                                        <input type="number" name="total_rainfall_mm" class="form-control" value="900" min="0" max="3000">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Humidity (%)</label>
+                                        <input type="number" name="avg_humidity_percent" class="form-control" value="70" min="0" max="100">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Season</label>
+                                        <select name="season" class="form-select">
+                                            <option value="Kharif">Kharif</option>
+                                            <option value="Rabi">Rabi</option>
+                                            <option value="Zaid">Zaid</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">State</label>
+                                        <select name="state" class="form-select">
+                                            <option value="Tamil Nadu">Tamil Nadu</option>
+                                            <option value="Karnataka">Karnataka</option>
+                                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                            <option value="Maharashtra">Maharashtra</option>
+                                            <option value="Punjab">Punjab</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-magic me-2"></i>Recommend Crops & Advice
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div id="cropResult" class="result-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- IoT Monitoring Section -->
+    <section id="iot-monitor" class="py-5 bg-light">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2 class="mb-4">
+                        <i class="fas fa-satellite me-2 text-primary"></i>Real-Time IoT Monitoring
+                        <span class="badge bg-danger ms-2 live-indicator pulse">LIVE</span>
+                    </h2>
+                </div>
+            </div>
+            
+            <!-- Sensor Charts -->
+            <div class="row g-4 mb-4">
+                <div class="col-lg-6">
+                    <div class="feature-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-tint text-info me-2"></i>Soil Moisture Level
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="soilMoistureChart" height="250"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="feature-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-thermometer-half text-danger me-2"></i>Temperature Monitoring
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="temperatureChart" height="250"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="feature-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-flask text-warning me-2"></i>Soil pH & NPK Levels
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="nutrientChart" height="250"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="feature-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-wind text-success me-2"></i>Environmental Conditions
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="environmentChart" height="250"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Real-time Alerts -->
+            <div id="alerts-container" class="mb-4"></div>
+        </div>
+    </section>
+
+    <!-- Climate Risk Assessment -->
+    <section id="climate-section" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">
+                <i class="fas fa-cloud-sun me-2 text-primary"></i>Climate Risk Assessment & Adaptation
+            </h2>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="feature-card">
+                        <div class="card-body">
+                            <form id="climateRiskForm" class="climate-form">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Location</label>
+                                        <input type="text" class="form-control" name="location" value="Tamil Nadu, India" placeholder="Enter your location">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Crop Type</label>
+                                        <select class="form-select" name="crop">
+                                            <option value="Rice">Rice</option>
+                                            <option value="Wheat">Wheat</option>
+                                            <option value="Cotton">Cotton</option>
+                                            <option value="Sugarcane">Sugarcane</option>
+                                            <option value="Maize">Maize</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-warning w-100 btn-lg">
+                                            <i class="fas fa-search me-2"></i>Assess Climate Risks & Get Adaptation Strategies
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                            <div id="climate-results" class="climate-results" style="display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Crop Health Analysis -->
+    <section id="crop-health" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">
+                <i class="fas fa-camera me-2 text-primary"></i>AI-Powered Crop Health Analysis
+            </h2>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="feature-card">
+                        <div class="card-body text-center">
+                            <div class="upload-area" id="uploadArea">
+                                <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                                <h5>Upload Crop Image for Analysis</h5>
+                                <p class="text-muted">Drag and drop an image or click to browse</p>
+                                <input type="file" id="cropImageInput" accept="image/*" class="d-none">
+                                <button class="btn btn-outline-primary" onclick="document.getElementById('cropImageInput').click()">
+                                    <i class="fas fa-folder-open me-2"></i>Choose Image
+                                </button>
+                            </div>
+                            
+                            <div id="imagePreview" class="image-preview" style="display: none;">
+                                <img id="previewImg" src="" alt="Preview" class="img-fluid rounded mb-3">
+                                <button class="btn btn-success btn-lg" onclick="analyzeCropHealth()">
+                                    <i class="fas fa-microscope me-2"></i>Analyze Crop Health
+                                </button>
+                            </div>
+                            
+                            <div id="healthResults" class="health-results" style="display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blockchain Traceability -->
+    <section id="traceability" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">
+                <i class="fas fa-link me-2 text-primary"></i>Blockchain Crop Traceability
+            </h2>
+            
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="feature-card">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-plus me-2"></i>Create Crop Record
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="cropRecordForm">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Farmer Name</label>
+                                        <input type="text" name="farmer_name" class="form-control" placeholder="Enter farmer name">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Crop Type</label>
+                                        <select name="crop_type" class="form-select">
+                                            <option value="Rice">Rice</option>
+                                            <option value="Wheat">Wheat</option>
+                                            <option value="Cotton">Cotton</option>
+                                            <option value="Sugarcane">Sugarcane</option>
+                                            <option value="Maize">Maize</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Location</label>
+                                        <input type="text" name="location" class="form-control" placeholder="Farm location">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Area (hectares)</label>
+                                        <input type="number" name="area_hectares" class="form-control" min="0.1" step="0.1" placeholder="0.0">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Planting Date</label>
+                                        <input type="date" name="planting_date" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Expected Harvest</label>
+                                        <input type="date" name="expected_harvest" class="form-control">
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-info w-100">
+                                            <i class="fas fa-blockchain me-2"></i>Create Blockchain Record
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div id="blockchainResult" class="result-container"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-4">
+                    <div class="feature-card">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0">
+                                <i class="fas fa-search me-2"></i>Trace Crop Journey
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group mb-3">
+                                <input type="number" id="traceInput" class="form-control" placeholder="Enter Record ID to trace">
+                                <button class="btn btn-warning" onclick="traceCrop()">
+                                    <i class="fas fa-search me-2"></i>Trace
+                                </button>
+                            </div>
+                            <div id="traceResults" class="trace-results"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gamification Section -->
+    <section id="gamification" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">
+                <i class="fas fa-trophy me-2 text-primary"></i>Your Farming Progress & Achievements
+            </h2>
+            
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="feature-card text-center">
+                        <div class="card-body">
+                            <h5>Farmer Level</h5>
+                            <div class="progress-circle-container">
+                                <svg class="progress-ring" width="120" height="120">
+                                    <circle cx="60" cy="60" r="50" stroke="#e6e6e6" stroke-width="8" fill="none"/>
+                                    <circle id="progress-circle" cx="60" cy="60" r="50" stroke="var(--primary-green)" 
+                                            stroke-width="8" fill="none" stroke-linecap="round"
+                                            stroke-dasharray="314" stroke-dashoffset="220"/>
+                                </svg>
+                                <div class="progress-text">
+                                    <h3 id="user-level">3</h3>
+                                    <small id="level-title">Expert Farmer</small>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <div class="d-flex justify-content-between">
+                                    <span>Progress to Next Level</span>
+                                    <span id="progress-points">750/1000 XP</span>
+                                </div>
+                                <div class="progress mt-2">
+                                    <div class="progress-bar bg-success" id="xp-progress" style="width: 75%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-8 mb-4">
+                    <div class="feature-card">
+                        <div class="card-body">
+                            <h5>Achievements Unlocked</h5>
+                            <div id="achievements-container" class="achievements-grid">
+                                <!-- Achievements will be loaded here -->
+                            </div>
+                            
+                            <div class="mt-4">
+                                <h6>Recent Activity</h6>
+                                <div id="activity-feed" class="activity-feed">
+                                    <div class="activity-item">
+                                        <i class="fas fa-chart-line text-success"></i>
+                                        <span>Made first yield prediction (+10 XP)</span>
+                                        <small class="text-muted">2 hours ago</small>
+                                    </div>
+                                    <div class="activity-item">
+                                        <i class="fas fa-cloud-sun text-warning"></i>
+                                        <span>Completed climate risk assessment (+25 XP)</span>
+                                        <small class="text-muted">1 day ago</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Smart Advice Chat -->
+    <section id="chat-section" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">
+                <i class="fas fa-comments me-2 text-primary"></i>Smart Agricultural Assistant
+            </h2>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="feature-card">
+                        <div class="card-body">
+                            <div id="chatbox" class="chat-container">
+                                <div id="messages" class="messages-container">
+                                    <div class="message ai-message">
+                                        <div class="message-avatar">
+                                            <i class="fas fa-robot"></i>
+                                        </div>
+                                        <div class="message-content">
+                                            <p>Hello! I'm your AI agricultural assistant. Ask me about irrigation, fertilizers, pest control, crop management, or any farming-related questions!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chat-input-container">
+                                    <div class="input-group">
+                                        <input type="text" id="chatInput" class="form-control" placeholder="Ask about irrigation, fertilizers, pest control...">
+                                        <button id="sendBtn" class="btn btn-primary">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-seedling me-2"></i>AgriTech Pro</h5>
+                    <p class="text-muted">Empowering farmers with AI-driven agricultural solutions for sustainable and profitable farming.</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p class="text-muted mb-0">
+                        Made with <i class="fas fa-heart text-danger"></i> for farmers worldwide
+                    </p>
+                    <small class="text-muted">© 2025 AgriTech Pro. All rights reserved.</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/script.js"></script>
+</body>
+</html>
