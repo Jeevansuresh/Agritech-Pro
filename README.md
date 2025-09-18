@@ -1,6 +1,19 @@
 🟢 AgriTech Pro
 Next-Generation Smart Farming Dashboard
 
+<img width="1913" height="1036" alt="image" src="https://github.com/user-attachments/assets/4bf0ac2d-e4e3-4480-91c9-fdfaf9dea906" />
+<img width="1915" height="1030" alt="image" src="https://github.com/user-attachments/assets/78883b61-0f8a-4f19-a3a1-163a803a15f2" />
+<img width="1918" height="1022" alt="image" src="https://github.com/user-attachments/assets/b636e27f-5e5f-4d91-b28a-a652962ecb84" />
+<img width="1918" height="982" alt="image" src="https://github.com/user-attachments/assets/711b8944-2713-43de-a9c3-56cc896e3abf" />
+<img width="1918" height="985" alt="image" src="https://github.com/user-attachments/assets/c7e4dbd0-443a-4f95-997d-63b05e87e2a7" />
+<img width="1918" height="976" alt="image" src="https://github.com/user-attachments/assets/49a36579-4292-440b-83da-5d31b8f64f01" />
+<img width="1917" height="1025" alt="image" src="https://github.com/user-attachments/assets/102eb4ea-4b48-40ae-b5ec-1e99ab4f3b1b" />
+
+
+
+
+
+
 Tagline:
 AI-Powered Crop Management | Real-Time IoT Monitoring | Climate Adaptation | Blockchain Traceability
 
